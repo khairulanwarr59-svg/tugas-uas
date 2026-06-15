@@ -1,0 +1,495 @@
+li<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apoteku | Website Apotek</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col font-[Plus_Jakarta_Sans]">
+  <!-- Top Bar -->
+  <div class="bg-slate-900 text-white px-4 py-2 text-xs flex flex-wrap items-center justify-between gap-2 z-50">
+    <div class="flex items-center gap-3">
+      <span class="inline-block w-2.5 h-2.5 rounded-full bg-teal-400 animate-pulse"></span>
+      <span class="font-semibold text-slate-300">Apoteku</span>
+
+      <!-- User avatar + name -->
+      <div class="flex items-center gap-2">
+        <div id="user-avatar" class="w-7 h-7 rounded-full bg-gradient-to-br from-teal-400 to-blue-600 flex items-center justify-center text-white font-black shadow-md">
+          <span id="user-avatar-initial" class="text-[10px]">U</span>
+        </div>
+        <span id="user-status" class="text-slate-300/80 hidden"></span>
+      </div>
+    </div>
+
+    <div class="flex gap-2 items-center">
+      <button id="btn-logout" onclick="logout()" class="hidden bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1 rounded font-bold">⎋ Logout</button>
+      <button onclick="showLogin()" id="btn-login" class="bg-gradient-to-r from-teal-600 to-blue-600 text-white px-5 py-2 rounded-xl text-xs font-bold shadow-md hover:scale-102 transition">
+        Masuk
+      </button>
+    </div>
+  </div>
+
+
+  <!-- Header Nav -->
+  <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-lg border-b border-slate-200/80 shadow-sm">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-teal-400 to-blue-600 flex items-center justify-center text-white font-black text-xl shadow-md">A</div>
+        <div>
+<h1 class="text-2xl font-black bg-gradient-to-r from-teal-400 to-blue-600 bg-clip-text text-transparent drop-shadow-sm">Apotek Samawa Pringsewu Lampung</h1>
+          <p class="text-[10px] uppercase tracking-widest text-slate-400 font-bold -mt-1">Katalog Produk • Resep • Manajemen Stok</p>
+        </div>
+      </div>
+
+      <nav class="flex items-center gap-4">
+        <button onclick="switchTab('katalog')" class="nav-link text-sm font-bold text-slate-600 hover:text-teal-600" id="nav-katalog">
+          <span class="inline-flex items-center gap-2">
+            <!-- grid icon -->
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 0h7v7h-7v-7z" fill="currentColor"/>
+            </svg>
+            Katalog
+          </span>
+        </button>
+
+        <button onclick="switchTab('resep')" class="nav-link text-sm font-bold text-slate-600 hover:text-teal-600" id="nav-resep">
+          <span class="inline-flex items-center gap-2">
+            <!-- prescription/upload icon -->
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="2"/>
+              <path d="M9 8h6M9 12h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M14.5 16.5l2 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M15.5 15.5v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Unggah Resep
+          </span>
+        </button>
+
+        <button onclick="switchTab('keranjang')" class="relative p-2 text-slate-600 hover:bg-slate-100 rounded-xl" id="nav-keranjang">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 7h15l-2 10H8L6 7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M6 7 5 3H2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span id="cart-badge" class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white font-bold text-[10px] flex items-center justify-center border-2 border-white hidden">0</span>
+        </button>
+
+        <button onclick="switchTab('transaksi')" class="nav-link text-sm font-bold text-slate-600 hover:text-teal-600 hidden" id="nav-transaksi">
+          <span class="inline-flex items-center gap-2">
+            <!-- receipt icon -->
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 3h10a2 2 0 0 1 2 2v16l-2-1-2 1-2-1-2 1-2-1-2 1V5a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M9 8h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M9 12h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Transaksi
+          </span>
+        </button>
+
+        <button onclick="switchTab('admin-sales')" class="nav-link text-sm font-bold text-slate-600 hover:text-teal-600 hidden" id="nav-admin-sales">
+
+          <span class="inline-flex items-center gap-2">
+            <!-- user check icon -->
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" stroke="currentColor" stroke-width="2"/>
+              <path d="M16.5 8.5 18 10l3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Admin Penjualan
+          </span>
+        </button>
+
+        <button onclick="switchTab('admin-gudang')" class="nav-link text-sm font-bold text-slate-600 hover:text-teal-600 hidden" id="nav-admin-gudang">
+          <span class="inline-flex items-center gap-2">
+            <!-- user icon -->
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            Admin Gudang
+          </span>
+        </button>
+      </nav>
+
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
+<div id="hero-banner" class="relative bg-gradient-to-r from-teal-700 to-blue-600 rounded-3xl p-8 sm:p-12 text-white shadow-xl mb-8 transform-gpu overflow-hidden">
+      <!-- blurred pharmacy background layer -->
+      <div class="absolute inset-0 -z-10">
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1580281658628-22e0a2d2f88a?auto=format&fit=crop&w=1600&q=80')] bg-cover bg-center opacity-25 blur-xl scale-110"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-teal-700/85 to-blue-600/75"></div>
+      </div>
+
+
+      <div class="relative">
+        <span class="bg-white/10 border border-white/20 text-teal-100 text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-full">📍 Pringsewu, Lampung</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold mt-4 leading-tight">Obat Asli & Layanan Resep Dokter Terpercaya</h2>
+        <p class="text-sm text-teal-50 mt-3 leading-relaxed">Frontend-only demo mirip marketplace: login/daftar + role + katalog produk + manajemen stok.</p>
+
+        <div class="mt-7 flex flex-col sm:flex-row gap-3">
+          <button onclick="switchTab('resep')" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-teal-400 hover:bg-teal-300 text-slate-900 font-black py-3 px-5 rounded-xl text-xs shadow-lg transition">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="2"/>
+              <path d="M9 8h6M9 12h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Unggah Resep Sekarang
+          </button>
+
+          <button onclick="switchTab('katalog')" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-900 font-black py-3 px-5 rounded-xl text-xs shadow-lg transition">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 0h7v7h-7v-7z" fill="currentColor"/>
+            </svg>
+            Lihat Katalog
+          </button>
+
+          <button onclick="goRegister()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 border-2 border-white/80 hover:bg-white/10 text-white font-black py-3 px-5 rounded-xl text-xs shadow-lg transition">
+
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 5v14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Daftar Sekarang
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- VIEW KATALOG -->
+    <section id="view-katalog" class="tab-view">
+      <div class="flex justify-between items-center mb-6 gap-3 flex-wrap">
+        <h3 class="text-xl font-bold">Katalog Produk</h3>
+        <div class="flex gap-3 items-center">
+          <select id="filter-kategori" onchange="filterProduk(this.value)" class="bg-white border border-slate-200 text-xs rounded-xl px-3 py-2 outline-none">
+            <option value="Semua">Semua Kategori</option>
+            <option value="Paracetamol">Paracetamol</option>
+            <option value="Antasida">Antasida</option>
+            <option value="Vitamin">Vitamin</option>
+            <option value="Diare">Diare</option>
+            <option value="Flu & Batuk">Flu & Batuk</option>
+<option value="Alkes">Alat Kesehatan</option>
+            <option value="Obat Keras">Obat Keras</option>
+            <option value="Obat Bebas">Obat Bebas</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+    </section>
+
+    <!-- VIEW RESEP -->
+    <section id="view-resep" class="tab-view hidden max-w-xl mx-auto bg-white rounded-3xl border border-slate-200 p-8 text-center">
+      <div class="text-4xl">📄</div>
+      <h3 class="text-2xl font-black text-slate-900 mt-3">Kirim Resep Dokter</h3>
+      <p class="text-xs text-slate-400 mt-1 mb-6">Upload file resep (demo). Tidak diproses medis.</p>
+
+      <div class="border-2 border-dashed border-slate-200 hover:border-teal-500 rounded-2xl p-8 relative cursor-pointer">
+        <input type="file" id="resep-file" class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*,.pdf" onchange="uploadResep(event)" />
+        <p class="text-xs font-bold text-slate-700" id="resep-file-name">Klik untuk mengunggah foto resep Anda</p>
+        <p class="text-[10px] text-slate-400 mt-1">Format JPG/PNG/PDF</p>
+      </div>
+      <button onclick="kirimResep()" class="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 rounded-xl text-xs">Kirim Resep</button>
+    </section>
+
+    <!-- VIEW KERANJANG -->
+    <section id="view-keranjang" class="tab-view hidden">
+      <div class="flex items-start gap-8 flex-col lg:flex-row">
+        <div class="flex-1 space-y-4 w-full">
+          <h3 class="text-xl font-bold">Keranjang Belanja Anda</h3>
+          <div id="cart-list" class="space-y-4"></div>
+        </div>
+        <div class="bg-white border rounded-3xl p-6 w-full lg:w-[360px]">
+          <h4 class="font-bold text-sm mb-4">Ringkasan Biaya</h4>
+          <div class="flex justify-between text-xs text-slate-500 mb-2">
+            <span>Subtotal</span>
+            <span id="subtotal-harga">Rp 0</span>
+          </div>
+          <div class="flex justify-between text-xs text-slate-500 mb-4">
+            <span>Ongkos Kirim</span>
+            <span class="text-emerald-600 font-bold">GRATIS</span>
+          </div>
+          <div class="flex justify-between font-bold text-base pt-4 border-t mb-6">
+            <span>Total Akhir</span>
+            <span id="total-harga">Rp 0</span>
+          </div>
+          <div class="mt-2">
+            <label class="block text-xs font-bold text-slate-600 mb-2">Pengambilan</label>
+            <div class="flex flex-col gap-2">
+              <label class="flex items-center gap-2 text-xs font-bold text-slate-700">
+                <input type="radio" name="metode-pengambilan" value="ambil-tempat" checked />
+                Ambil di Tempat
+              </label>
+              <label class="flex items-center gap-2 text-xs font-bold text-slate-700">
+                <input type="radio" name="metode-pengambilan" value="gosend" />
+                GoSend
+              </label>
+              <div id="gosend-alamat-wrap" class="hidden">
+                <input id="gosend-alamat" type="text" placeholder="Masukkan alamat GoSend" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none text-xs font-bold" />
+                <p class="text-[10px] text-slate-400 mt-1">Demo: alamat disimpan ke transaksi (localStorage).</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <label class="block text-xs font-bold text-slate-600 mb-2">Metode Pembayaran</label>
+            <div class="flex flex-col gap-2">
+              <label class="flex items-center gap-2 text-xs font-bold text-slate-700">
+                <input type="radio" name="metode-pembayaran" value="tunai" />
+                Bayar di Tempat
+              </label>
+              <label class="flex items-center gap-2 text-xs font-bold text-slate-700">
+                <input type="radio" name="metode-pembayaran" value="transfer" checked />
+                Transfer Bank DANA (0895326738684)
+              </label>
+              <p class="text-[10px] text-slate-400 mt-1">
+                Demo: jika transfer, customer upload bukti. Jika tunai, transaksi langsung diproses.
+              </p>
+            </div>
+          </div>
+
+
+          <button onclick="checkout()" id="btn-checkout" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 rounded-xl text-xs mt-4">
+            Checkout Online (QRIS DANA)
+          </button>
+          <p class="text-[10px] text-slate-400 mt-3 hidden" id="checkout-hint">Login sebagai customer untuk checkout.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW CUSTOMER TRANSAKSI / PEMBAYARAN -->
+    <section id="view-transaksi" class="tab-view hidden max-w-6xl mx-auto">
+      <div class="flex justify-between items-center mb-4 gap-3 flex-wrap">
+        <h3 class="text-xl font-bold">Transaksi Customer</h3>
+        <button onclick="renderCustomerTransaksi()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2 rounded-xl">Refresh</button>
+      </div>
+
+      <div class="bg-white border rounded-3xl overflow-hidden shadow-sm">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-slate-50 border-b text-xs font-bold text-slate-500 uppercase">
+            <tr>
+              <th class="p-4">ID</th>
+              <th class="p-4">Total</th>
+              <th class="p-4">Status</th>
+              <th class="p-4">Pembayaran</th>
+              <th class="p-4">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="customer-transaksi-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+
+    <!-- VIEW ADMIN PENJUALAN -->
+    <section id="view-admin-sales" class="tab-view hidden max-w-6xl mx-auto">
+      <h3 class="text-xl font-bold mb-4">Dashboard Admin Penjualan</h3>
+      <div class="bg-white border rounded-3xl overflow-hidden shadow-sm">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-slate-50 border-b text-xs font-bold text-slate-500 uppercase">
+            <tr>
+              <th class="p-4">ID Transaksi</th>
+              <th class="p-4">Pelanggan</th>
+              <th class="p-4">Total Biaya</th>
+              <th class="p-4">Status</th>
+              <th class="p-4">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="sales-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- VIEW ADMIN GUDANG -->
+    <section id="view-admin-gudang" class="tab-view hidden max-w-6xl mx-auto">
+      <div class="flex justify-between items-center mb-4 gap-3 flex-wrap">
+        <h3 class="text-xl font-bold">Manajemen Produk & Stok</h3>
+        <button onclick="openAddProduct()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2 rounded-xl">+ Tambah Produk</button>
+      </div>
+
+      <div class="bg-white border rounded-3xl overflow-hidden shadow-sm">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-slate-50 border-b text-xs font-bold text-slate-500 uppercase">
+            <tr>
+              <th class="p-4">Gambar</th>
+              <th class="p-4">Nama</th>
+              <th class="p-4">Kategori</th>
+              <th class="p-4">Stok</th>
+              <th class="p-4">Harga Medis</th>
+              <th class="p-4">Harga Umum</th>
+              <th class="p-4">Unit</th>
+              <th class="p-4">Upload & Simpan</th>
+            </tr>
+          </thead>
+          <tbody id="gudang-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-6 right-6 bg-teal-600 text-white text-xs font-bold px-4 py-3 rounded-xl shadow-lg hidden"></div>
+
+  <!-- Auth Modal -->
+  <div id="modal-auth" class="fixed inset-0 bg-black/50 hidden z-50 items-center justify-center px-4">
+    <div class="bg-white rounded-3xl shadow-xl w-full max-w-lg p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-black text-slate-900">Masuk / Daftar</h3>
+        <button onclick="hideLogin()" class="text-slate-500 hover:text-slate-800 font-bold">✕</button>
+      </div>
+
+      <div class="flex gap-2 mb-4">
+        <button id="tab-login" onclick="authSetMode('login')" class="flex-1 bg-slate-900 text-white text-xs font-bold py-2 rounded-xl">Login</button>
+        <button id="tab-register" onclick="authSetMode('register')" class="flex-1 bg-slate-100 text-slate-700 text-xs font-bold py-2 rounded-xl">Daftar</button>
+      </div>
+
+      <div>
+        <div id="login-form" class="space-y-3">
+          <div>
+            <label class="text-xs font-bold text-slate-600">Email / Username</label>
+            <input id="login-identifier" type="text" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none" placeholder="customer1 / adminsales1" />
+          </div>
+          <div>
+            <label class="text-xs font-bold text-slate-600">Password</label>
+            <input id="login-password" type="password" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none" placeholder="••••••••" />
+          </div>
+          <button onclick="loginSubmit()" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 rounded-xl text-xs shadow-md">Masuk</button>
+
+          <div class="flex items-center justify-between gap-3">
+            <button onclick="showResetPassword()" class="text-[10px] font-bold text-slate-600 hover:text-slate-900">
+              Lupa Password?
+            </button>
+            <span class="text-[10px] text-slate-400">QRIS Demo</span>
+          </div>
+
+          <p class="text-[10px] text-slate-400 text-center">Admin seed: admin-gudang & admin-sales (password: 12345678)</p>
+        </div>
+
+        <div id="reset-form" class="space-y-3 hidden">
+          <div class="flex items-center gap-2">
+            <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-teal-400 to-blue-600 flex items-center justify-center text-white font-black shadow-md">?</div>
+            <div>
+              <h4 class="text-sm font-black text-slate-900">Atur Ulang Password</h4>
+              <p class="text-[10px] text-slate-400">Isi Username atau Email, lalu buat password baru.</p>
+            </div>
+          </div>
+
+          <div>
+            <label class="text-xs font-bold text-slate-600">Username / Email</label>
+            <input id="reset-identifier" type="text" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none" placeholder="misal: customer1 atau adminsales1" />
+          </div>
+
+          <div>
+            <label class="text-xs font-bold text-slate-600">Password Baru</label>
+            <input id="reset-new-pass" type="password" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none" placeholder="buat password baru" />
+          </div>
+
+          <div>
+            <label class="text-xs font-bold text-slate-600">Konfirmasi Password</label>
+            <input id="reset-confirm-pass" type="password" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none" placeholder="ketik ulang password baru" />
+          </div>
+
+          <button onclick="resetPasswordSubmit()" id="btn-reset-submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl text-xs shadow-md">
+            Simpan Password Baru
+          </button>
+
+          <button onclick="hideResetPassword()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3 rounded-xl text-xs">
+            Kembali ke Login
+          </button>
+        </div>
+
+        <div id="register-form" class="space-y-3 hidden">
+          <div>
+            <label class="text-xs font-bold text-slate-600">Nama</label>
+            <input id="reg-nama" type="text" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none" placeholder="Nama Anda" />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-xs font-bold text-slate-600">Username</label>
+              <input id="reg-username" type="text" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none" placeholder="username" />
+            </div>
+            <div>
+              <label class="text-xs font-bold text-slate-600">Role</label>
+              <select id="reg-role" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none">
+                <option value="customer" selected>Customer</option>
+                <option value="admin-sales">Admin Penjualan</option>
+                <option value="admin-gudang">Admin Gudang</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="text-xs font-bold text-slate-600">Email</label>
+            <input id="reg-email" type="email" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none" placeholder="email@contoh.com" />
+          </div>
+          <div>
+            <label class="text-xs font-bold text-slate-600">Password</label>
+            <input id="reg-password" type="password" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none" placeholder="buat password" />
+          </div>
+          <div>
+            <label class="text-xs font-bold text-slate-600">Admin Code</label>
+            <input id="reg-admin-code" type="text" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none" placeholder="(wajib jika role admin)" />
+          </div>
+          <button onclick="registerSubmit()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl text-xs shadow-md">Buat Akun</button>
+          <p class="text-[10px] text-slate-400 text-center">Admin code default: APOTEK123</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Product Modal -->
+  <div id="modal-add-product" class="fixed inset-0 bg-black/50 hidden z-50 items-center justify-center px-4">
+    <div class="bg-white rounded-3xl shadow-xl w-full max-w-2xl p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-black text-slate-900">Tambah Produk</h3>
+        <button onclick="closeAddProduct()" class="text-slate-500 hover:text-slate-800 font-bold">✕</button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="text-xs font-bold text-slate-600">Nama Obat</label>
+          <input id="add-nama" type="text" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none" />
+        </div>
+        <div>
+          <label class="text-xs font-bold text-slate-600">Kategori</label>
+          <input id="add-kategori" type="text" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none" placeholder="Paracetamol" />
+        </div>
+        <div>
+          <label class="text-xs font-bold text-slate-600">Unit</label>
+          <input id="add-unit" type="text" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none" placeholder="Strip / Tablet" />
+        </div>
+        <div>
+          <label class="text-xs font-bold text-slate-600">Stok</label>
+          <input id="add-stok" type="number" min="0" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none" value="0" />
+        </div>
+        <div>
+          <label class="text-xs font-bold text-slate-600">Harga Medis</label>
+          <input id="add-medis" type="number" min="0" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none" value="0" />
+        </div>
+        <div>
+          <label class="text-xs font-bold text-slate-600">Harga Umum</label>
+          <input id="add-umum" type="number" min="0" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none" value="0" />
+        </div>
+        <div class="sm:col-span-2">
+          <label class="text-xs font-bold text-slate-600">Gambar Produk</label>
+          <input id="add-gambar" type="file" accept="image/*" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none" />
+          <p class="text-[10px] text-slate-400 mt-1">Upload gambar disimpan di localStorage (base64).</p>
+        </div>
+      </div>
+
+      <div class="flex gap-3 mt-6">
+        <button onclick="closeAddProduct()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3 rounded-xl text-xs">Batal</button>
+        <button onclick="submitAddProduct()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl text-xs shadow-md">Simpan Produk</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
+

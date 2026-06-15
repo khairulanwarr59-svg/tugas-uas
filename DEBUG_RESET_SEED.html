@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reset Apoteku Seed Debug</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif; padding:24px; background:#f8fafc; color:#0f172a}
+    .card{background:#fff; border:1px solid #e2e8f0; border-radius:14px; padding:18px; max-width:720px; margin:auto}
+    button{cursor:pointer; border:0; border-radius:12px; padding:10px 14px; font-weight:700; background:#0d9488; color:#fff; margin-right:10px}
+    button.danger{background:#dc2626}
+    pre{background:#0b1020; color:#e5e7eb; padding:12px; border-radius:12px; overflow:auto}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2 style="margin:0 0 8px">Reset Seed Produk (Apoteku)</h2>
+    <p style="margin:0 0 16px">Halaman ini menghapus localStorage key produk agar katalog kembali memakai <code>PRODUK_SEED</code>.</p>
+
+    <div>
+      <button onclick="resetProduk()">Reset apoteku_produk_v1</button>
+      <button class="danger" onclick="resetAll()">Reset semua (users, session, produk, transaksi)</button>
+    </div>
+
+    <h3 style="margin-top:18px">Status</h3>
+    <pre id="out"></pre>
+  </div>
+
+  <script>
+    const KEYS={
+      users:'apoteku_users_v1',
+      session:'apoteku_session_v1',
+      produk:'apoteku_produk_v1',
+      transaksi:'apoteku_transaksi_v1',
+      qris:'apoteku_qris_v1'
+    };
+
+    const out=document.getElementById('out');
+
+    function snapshot(){
+      const data={};
+      for(const [k,v] of Object.entries(KEYS)){
+        data[v]=localStorage.getItem(v);
+      }
+      return data;
+    }
+
+    function render(label){
+      out.textContent = label+'\n\n'+JSON.stringify(snapshot(), null, 2);
+    }
+
+    function resetProduk(){
+      localStorage.removeItem(KEYS.produk);
+      render('✅ apoteku_produk_v1 dihapus. Reload halaman katalog untuk melihat seed.' );
+    }
+
+    function resetAll(){
+      Object.values(KEYS).forEach(k=>localStorage.removeItem(k));
+      render('⚠️ Semua key dihapus. Reload halaman untuk seed penuh.' );
+    }
+
+    render('Siap. Klik tombol untuk reset.');
+  </script>
+</body>
+</html>
+

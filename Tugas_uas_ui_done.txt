@@ -1,0 +1,2 @@
+UI redesign in progress/completed changes have been applied to index.html, style.css, and app.js per TODO.
+

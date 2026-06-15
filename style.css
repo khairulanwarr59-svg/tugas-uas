@@ -1,0 +1,176 @@
+body{font-family:"Plus Jakarta Sans",sans-serif;background:linear-gradient(135deg,#f0fdf4 0%,#eff6ff 100%)}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:#94a3b8}
+
+/* Card base */
+.medicine-card{
+  background:rgba(255,255,255,.72);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.55);
+  border-radius:24px;
+  transition:all .25s cubic-bezier(.4,0,.2,1);
+  position:relative;
+  overflow:hidden;
+}
+
+/* Card depth */
+.medicine-card{
+  transform-style:preserve-3d;
+  will-change:transform;
+  box-shadow:0 10px 30px rgba(2,6,23,.04);
+}
+
+/* Hover premium */
+.medicine-card:hover{
+  transform:translateY(-10px) scale(1.02);
+  box-shadow:0 26px 70px rgba(16,185,129,.22);
+  background:#fff;
+  border-color:rgba(45,212,191,.35);
+}
+
+/* Smooth shine */
+.medicine-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:24px;
+  background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,.35) 35%,transparent 60%);
+  opacity:0;
+  transform:translateX(-20%);
+  transition:opacity .25s ease,transform .5s ease;
+  pointer-events:none;
+}
+.medicine-card:hover::after{
+  opacity:.8;
+  transform:translateX(20%);
+}
+
+/* Banner 3D */
+#hero-banner{perspective:1000px;position:relative;overflow:hidden}
+#hero-banner::after{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  background:
+    radial-gradient(700px circle at 10% 20%, rgba(255,255,255,.22), transparent 45%),
+    radial-gradient(600px circle at 90% 30%, rgba(56,189,248,.22), transparent 50%);
+  pointer-events:none;
+  border-radius:inherit;
+}
+
+/* Slight lift for select/inputs */
+select,input{transition:box-shadow .2s ease,border-color .2s ease}
+select:focus,input:focus{
+  border-color:rgba(45,212,191,.6);
+  box-shadow:0 0 0 4px rgba(20,184,166,.12);
+  outline:none;
+}
+
+/* Toast premium */
+#toast{backdrop-filter:blur(10px)}
+#toast{
+  transition:transform .25s ease,opacity .25s ease;
+  opacity:0;
+  transform:translateY(10px) scale(.98);
+}
+#toast:not(.hidden){
+  opacity:1;
+  transform:translateY(0) scale(1);
+}
+
+/* Nav links polish */
+.nav-link{
+  position:relative;
+  padding:6px 10px;
+  border-radius:12px;
+  transition:all .2s ease;
+}
+.nav-link:hover{
+  background:rgba(15,23,42,.04);
+  color:rgb(13 148 136);
+}
+.nav-link:focus{
+  outline:none;
+  box-shadow:0 0 0 4px rgba(20,184,166,.18);
+}
+
+/* Modal polish */
+#modal-auth,
+#modal-add-product{
+  backdrop-filter:blur(8px);
+}
+#modal-auth > div,
+#modal-add-product > div{
+  box-shadow:0 30px 80px rgba(2,6,23,.18);
+}
+
+/* Table polish */
+table{border-collapse:separate;border-spacing:0}
+tbody tr{transition:background .18s ease}
+tbody tr:hover{background:rgba(45,212,191,.06)}
+
+/* Disabled buttons */
+button:disabled{filter:saturate(.6);opacity:.9}
+
+/* Subtle badge emphasis */
+#cart-badge{box-shadow:0 12px 30px rgba(239,68,68,.35)}
+
+/* Drop shadow for headings */
+.drop-shadow-sm{text-shadow:0 2px 14px rgba(0,0,0,.18)}
+
+/* ===== Professional polish additions ===== */
+
+/* Inputs/selects consistency */
+input[type="text"], input[type="email"], input[type="password"], input[type="number"], select, textarea{
+  background:rgba(255,255,255,.78);
+  border-radius:14px;
+}
+input::placeholder, textarea::placeholder{
+  color:rgba(100,116,139,.9);
+}
+input:focus, select:focus{
+  outline:none;
+}
+
+/* Better card grid spacing & transition */
+#product-grid .medicine-card{
+  will-change:transform;
+  transition:transform .25s cubic-bezier(.4,0,.2,1), box-shadow .25s cubic-bezier(.4,0,.2,1), background .25s ease;
+}
+
+/* Table polish: header subtle border + row separators */
+thead th{
+  border-bottom:1px solid rgba(226,232,240,.75);
+}
+tbody td{
+  border-top:1px solid rgba(226,232,240,.55);
+}
+
+/* Primary buttons inside summaries/modals */
+button.bg-teal-600, button.bg-teal-700{
+  box-shadow:0 14px 30px rgba(20,184,166,.18);
+}
+button.bg-indigo-600, button.bg-indigo-700{
+  box-shadow:0 14px 30px rgba(99,102,241,.16);
+}
+
+/* Toast: border + stronger shadow */
+#toast{
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow:0 22px 60px rgba(13,148,136,.35);
+  border-radius:16px;
+}
+
+/* Modal panel smoothing (in case Tailwind classes differ) */
+#modal-auth > div, #modal-add-product > div{
+  border:1px solid rgba(255,255,255,.35);
+}
+
+/* Small helper for links/buttons hover */
+a:hover, button:hover{
+  transition:all .18s ease;
+}
